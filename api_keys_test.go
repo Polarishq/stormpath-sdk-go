@@ -14,8 +14,10 @@ func TestGetAPIKey(t *testing.T) {
 	defer application.Purge()
 
 	account := createTestAccount(application, t)
-
-	apiKey, _ := account.CreateAPIKey()
+	key := APIKey{
+		Name: "test",
+	}
+	apiKey, _ := account.CreateAPIKey(&key)
 
 	k, err := GetAPIKey(apiKey.Href, MakeAPIKeyCriteria())
 
@@ -30,8 +32,8 @@ func TestDeleteAPIKey(t *testing.T) {
 	defer application.Purge()
 
 	account := createTestAccount(application, t)
-
-	apiKey, _ := account.CreateAPIKey()
+	key := APIKey{}
+	apiKey, _ := account.CreateAPIKey(&key)
 
 	err := apiKey.Delete()
 
@@ -51,16 +53,18 @@ func TestUpdateAPIKey(t *testing.T) {
 	defer application.Purge()
 
 	account := createTestAccount(application, t)
-
-	apiKey, _ := account.CreateAPIKey()
+	key := APIKey{}
+	apiKey, _ := account.CreateAPIKey(&key)
 
 	apiKey.Status = Disabled
+	apiKey.Name = "Test"
 	err := apiKey.Update()
 
 	assert.NoError(t, err)
 
 	updatedAPIKey, _ := GetAPIKey(apiKey.Href, MakeAPIKeyCriteria())
 	assert.Equal(t, Disabled, updatedAPIKey.Status)
+	assert.Equal(t, "Test", updatedAPIKey.Name)
 }
 
 func TestGetAPIKeys(t *testing.T) {
@@ -70,9 +74,10 @@ func TestGetAPIKeys(t *testing.T) {
 	defer application.Purge()
 
 	account := createTestAccount(application, t)
-
-	apiKey1, _ := account.CreateAPIKey()
-	apiKey2, _ := account.CreateAPIKey()
+	ak1 := APIKey{}
+	ak2 := APIKey{}
+	apiKey1, _ := account.CreateAPIKey(&ak1)
+	apiKey2, _ := account.CreateAPIKey(&ak2)
 
 	keys, err := GetAPIKeys(account.APIKeys.Href, MakeAPIKeyCriteria())
 

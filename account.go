@@ -197,10 +197,8 @@ func (account *Account) GetAccessTokens(criteria OAuthTokenCriteria) (*OAuthToke
 }
 
 //CreateAPIKey creates a new API key pair for the given account, it returns a pointer to the APIKey pair.
-func (account *Account) CreateAPIKey() (*APIKey, error) {
-	apiKey := &APIKey{}
-
-	err := client.post(account.APIKeys.Href, emptyPayload(), apiKey)
+func (account *Account) CreateAPIKey(apiKey *APIKey) (*APIKey, error) {
+	err := client.post(account.APIKeys.Href, apiKey, apiKey)
 	if err != nil {
 		return nil, err
 	}
