@@ -60,7 +60,8 @@ func TestOAuthClientCredentialsAuthenticator(t *testing.T) {
 	defer application.Purge()
 
 	account := createTestAccount(application, t)
-	apiKey, _ := account.CreateAPIKey()
+	key := APIKey{}
+	apiKey, _ := account.CreateAPIKey(&key)
 
 	authenticator := NewOAuthClientCredentialsAuthenticator(application)
 
@@ -112,7 +113,8 @@ func TestOAuthClientCredentialsAuthenticatorScopeFactoryValidScope(t *testing.T)
 	defer application.Purge()
 
 	account := createTestAccount(application, t)
-	apiKey, _ := account.CreateAPIKey()
+	key := APIKey{}
+	apiKey, _ := account.CreateAPIKey(&key)
 
 	authenticator := NewOAuthClientCredentialsAuthenticator(application)
 	authenticator.ScopeFactory = ScopeFactoryFunc(func(scope string) bool {
@@ -134,7 +136,8 @@ func TestBasicAuthenticator(t *testing.T) {
 	defer application.Purge()
 
 	account := createTestAccount(application, t)
-	apiKey, _ := account.CreateAPIKey()
+	key := APIKey{}
+	apiKey, _ := account.CreateAPIKey(&key)
 
 	authenticator := NewBasicAuthenticator(application)
 
@@ -165,7 +168,8 @@ func TestBasicAuthenticatorDisabledCredentials(t *testing.T) {
 	defer application.Purge()
 
 	account := createTestAccount(application, t)
-	apiKey, _ := account.CreateAPIKey()
+	key := APIKey{}
+	apiKey, _ := account.CreateAPIKey(&key)
 	apiKey.Status = Disabled
 	apiKey.Update()
 
@@ -185,7 +189,8 @@ func TestBasicAuthenticatorDisabledAccount(t *testing.T) {
 	defer application.Purge()
 
 	account := createTestAccount(application, t)
-	apiKey, _ := account.CreateAPIKey()
+	key := APIKey{}
+	apiKey, _ := account.CreateAPIKey(&key)
 	account.Status = Disabled
 	account.Update()
 
@@ -205,7 +210,8 @@ func TestBasicAuthenticatorInvalidSecret(t *testing.T) {
 	defer application.Purge()
 
 	account := createTestAccount(application, t)
-	apiKey, _ := account.CreateAPIKey()
+	key := APIKey{}
+	apiKey, _ := account.CreateAPIKey(&key)
 
 	authenticator := NewBasicAuthenticator(application)
 
