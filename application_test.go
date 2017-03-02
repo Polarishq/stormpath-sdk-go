@@ -421,8 +421,8 @@ func TestApplicationGetAPIKey(t *testing.T) {
 	defer application.Purge()
 
 	account := createTestAccount(application, t)
-
-	apiKey, err := account.CreateAPIKey()
+	key := APIKey{}
+	apiKey, err := account.CreateAPIKey(&key)
 	assert.NoError(t, err)
 	assert.NotNil(t, apiKey)
 

@@ -8,6 +8,7 @@ import "net/url"
 type APIKey struct {
 	resource
 	ID      string   `json:"id"`
+	Name    string   `json:"name"`
 	Secret  string   `json:"secret"`
 	Status  string   `json:"status"`
 	Account *Account `json:"account"`
@@ -73,7 +74,10 @@ func (k *APIKey) Delete() error {
 
 //Update updates the given APIKey against Stormpath
 func (k *APIKey) Update() error {
-	return client.post(k.Href, map[string]string{"status": k.Status}, k)
+	return client.post(k.Href, map[string]string{
+		"status": k.Status,
+		"name": k.Name,
+	}, k)
 }
 
 //WithAccount adds the account expansion to the given APIKeyCriteria
